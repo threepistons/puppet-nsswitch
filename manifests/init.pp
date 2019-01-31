@@ -120,6 +120,12 @@
 #   Sudoers policy module users.
 #   *Variant* (defaults to $nsswitch::params::sudoers_default)
 #
+# @param overwrite
+#
+#   Allow the sysadmin to enforce the contents of nsswitch.conf
+#   even if it changes.  Takes: true, false, yes, no.
+#   *Optional* (defaults to $nsswitch::params::overwrite)
+#
 class nsswitch (
   Variant[String, Array, Undef] $aliases    = $nsswitch::params::aliases_default,
   Variant[String, Array, Undef] $automount  = $nsswitch::params::automount_default,
@@ -142,6 +148,7 @@ class nsswitch (
   Variant[String, Array, Undef] $shells     = $nsswitch::params::shells_default,
   Variant[String, Array, Undef] $gshadow    = $nsswitch::params::gshadow_default,
   Variant[String, Array, Undef] $sudoers    = $nsswitch::params::sudoers_default,
+  Variant[String, Undef] $overwrite         = $nsswitch::params::overwrite
 ) inherits nsswitch::params {
 
   file { 'nsswitch.conf':
@@ -151,5 +158,6 @@ class nsswitch (
     group   => $file_group,
     mode    => $file_perms,
     content => epp('nsswitch/nsswitch.conf.epp'),
+    replace => $overwrite,
   }
 }

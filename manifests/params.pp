@@ -6,6 +6,7 @@ class nsswitch::params {
 
   $file_owner = 'root'
   $file_perms = '0644'
+  $overwrite  = 'no'
 
   case $facts['operatingsystem'] {
     /CentOS|RedHat|Amazon|OEL|OracleLinux|Scientific|CloudLinux/: {

@@ -7,6 +7,9 @@ describe 'nsswitch', type: :class do
 
       it { is_expected.to compile.with_all_deps }
       it { is_expected.to have_resource_count(1) }
+      # next test to make sure I don't break existing behaviour of
+      # the file not being replaced
+      it { is_expected.to contain_file('nsswitch.conf').with_replace('no')}
     end
   end
 
@@ -55,7 +58,7 @@ describe 'nsswitch', type: :class do
       }
     end
 
-    context 'every parameter will accept type of STRING' do
+    context 'every parameter bar overwrite will accept type of STRING' do
       let(:params) do
         {
           aliases: 'foo',
@@ -74,13 +77,15 @@ describe 'nsswitch', type: :class do
           services: 'foo',
           shadow: 'foo',
           sudoers: 'foo',
+          overwrite: 'yes',
         }
       end
 
       it { is_expected.to compile }
+      it { is_expected.to contain_file('nsswitch.conf').with_replace('yes')}
     end
 
-    context 'every parameter will accept type of ARRAY' do
+    context 'every parameter bar overwrite will accept type of ARRAY' do
       let(:params) do
         {
           aliases: ['foo'],
@@ -99,10 +104,12 @@ describe 'nsswitch', type: :class do
           services: ['foo'],
           shadow: ['foo'],
           sudoers: ['foo'],
+          overwrite: 'no',
         }
       end
 
       it { is_expected.to compile }
+      it { is_expected.to contain_file('nsswitch.conf').with_replace('no')}
     end
   end
 end
