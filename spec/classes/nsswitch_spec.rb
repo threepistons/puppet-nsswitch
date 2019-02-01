@@ -9,7 +9,7 @@ describe 'nsswitch', type: :class do
       it { is_expected.to have_resource_count(1) }
       # next test to make sure I don't break existing behaviour of
       # the file not being replaced
-      it { is_expected.to contain_file('nsswitch.conf').with_replace('no')}
+      it { is_expected.to contain_file('nsswitch.conf').with_replace('yes')}
     end
   end
 
